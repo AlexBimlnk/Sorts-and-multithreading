@@ -40,7 +40,7 @@ namespace UniversalSorter.SortsLibrary
             Debug.WriteLine($"Sort: {algorithm.GetType()}\n" +
                             $"Threads support: {algorithm.ThreadSupport}\n" +
                             $"Threads: {algorithm.Threads}\n" +
-                            $"Count elemets: {algorithm.Items.Count}\n" +
+                            $"Count elemets: {algorithm.Items.Count/1000}k\n" +
                             $"Time default sort: {timeDefaultSort}ms\n" +
                             $"Memory default sort used: {memoryDefaultSort}MByte\n" +
                             $"Time multithread sort: {timeMultithreadSort}ms\n" +

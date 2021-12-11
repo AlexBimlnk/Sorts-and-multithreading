@@ -38,7 +38,12 @@ namespace UniversalSorter.SortsLibrary
         /// Третий параметр - id потока, в котором выполнено действие.
         /// </summary>
         public event EventHandler<Tuple<T, T, int?>> CompareEvent;
-        
+        /// <summary>
+        /// Событие, вызываемое во постановки элемента на указанное место. 
+        /// Третий параметр - id потока, в котором выполнено действие.
+        /// </summary>
+        public event EventHandler<Tuple<T, int, int?>> SetEvent;
+
         /// <summary>
         /// Возвращает коллекцию.
         /// </summary>
@@ -119,13 +124,26 @@ namespace UniversalSorter.SortsLibrary
             throw new NotSupportedException();
         }
 
-
+        /// <summary>
+        /// Ставит элемент на заданную позицию в указанной коллекции.
+        /// </summary>
+        /// <param name="item"> Элемент, который нужно установить. </param>
+        /// <param name="position"> Позиция, на которую нужно установить элемент. </param>
+        /// <param name="items"> Коллекция, в которой происходит установка элемента. </param>
+        protected void Set(T item, int position, List<T> items)
+        {
+            if(0<=position && position < items.Count)
+            {
+                items[position] = item;
+                SetEvent?.Invoke(this, new Tuple<T, int, int?>(item, position, Task.CurrentId));
+            }
+        }
         /// <summary>
         /// Переставляет два элемента местами.
         /// </summary>
         /// <param name="position1"> Номер первого элемента в коллекции. </param>
         /// <param name="position2"> Номер второго элемента в коллекции.</param>
-        protected void Swop(int position1, int position2)
+        protected void Swap(int position1, int position2)
         {
             T item = collection[position1];
             collection[position1] = collection[position2];

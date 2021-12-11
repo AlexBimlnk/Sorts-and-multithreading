@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Threading;
 using UniversalSorter.SortsLibrary.SortAlgorithms;
 
 namespace UniversalSorter.SortsLibrary.Tests
@@ -25,7 +26,7 @@ namespace UniversalSorter.SortsLibrary.Tests
         [ClassInitialize()]
         public static void Init(TestContext context)
         {
-            for (int i = 0; i < 100; i++)
+            for (int i = 0; i < 10000; i++)
             {
                 inputList.Add(rnd.Next(0, 1000));
             }
@@ -33,100 +34,6 @@ namespace UniversalSorter.SortsLibrary.Tests
             sortedList.AddRange(inputList.OrderBy(x => x).ToArray());
         }
 
-        [TestMethod(), TestCategory("BaseAlgorithm")]
-        public void AlgorithmBaseSortTest()
-        {
-            // arrange
-            var sortAlgorithm = new AlgorithmBase<int>(inputList);
-
-            // act
-            sortAlgorithm.StartSort();
-
-            // assert
-            for (int i = 0; i < inputList.Count; i++)
-            {
-                Assert.AreEqual(sortedList[i], sortAlgorithm.Items[i]);
-            }
-        }
-
-        [TestMethod(), TestCategory("BaseAlgorithm")]
-        public void AlgorithmBaseMultiThreadingSortTest()
-        {
-            // arrange
-            var sortAlgorithm = new AlgorithmBase<int>(inputList);
-
-            // act-assert
-            Assert.ThrowsException<NotSupportedException>(() => sortAlgorithm.StartMultiThreadingSort());
-        }
-
-        [TestMethod(), TestCategory("MergeSortAlgorithm")]
-        public void MergeSortTest()
-        {
-            // arrange
-            var sortAlgorithm = new MergeSort<int>(inputList);
-            //sortAlgorithm.CompareEvent += M1;
-
-            // act
-            sortAlgorithm.StartSort();
-
-            // assert
-            for (int i = 0; i < inputList.Count; i++)
-            {
-                Assert.AreEqual(sortedList[i], sortAlgorithm.Items[i]);
-            }
-        }
-
-        [TestMethod(), TestCategory("MergeSortAlgorithm")]
-        public void MergeMultiThreadingSortTest2()
-        {
-            // arrange
-            var sortAlgorithm = new MergeSort<int>(inputList);
-            sortAlgorithm.Threads = 2;
-            //sortAlgorithm.CompareEvent += M1;
-
-            // act
-            sortAlgorithm.StartMultiThreadingSort();
-
-            // assert
-            for (int i = 0; i < inputList.Count; i++)
-            {
-                Assert.AreEqual(sortedList[i], sortAlgorithm.Items[i]);
-            }
-        }
-        [TestMethod(), TestCategory("MergeSortAlgorithm")]
-        public void MergeMultiThreadingSortTest4()
-        {
-            // arrange
-            var sortAlgorithm = new MergeSort<int>(inputList);
-            sortAlgorithm.Threads = 4;
-            //sortAlgorithm.CompareEvent += M1;
-
-            // act
-            sortAlgorithm.StartMultiThreadingSort();
-
-            // assert
-            for (int i = 0; i < inputList.Count; i++)
-            {
-                Assert.AreEqual(sortedList[i], sortAlgorithm.Items[i]);
-            }
-        }
-        [TestMethod(), TestCategory("MergeSortAlgorithm")]
-        public void MergeMultiThreadingSortTest8()
-        {
-            // arrange
-            var sortAlgorithm = new MergeSort<int>(inputList);
-            sortAlgorithm.Threads = 8;
-            //sortAlgorithm.CompareEvent += M1;
-
-            // act
-            sortAlgorithm.StartMultiThreadingSort();
-
-            // assert
-            for (int i = 0; i < inputList.Count; i++)
-            {
-                Assert.AreEqual(sortedList[i], sortAlgorithm.Items[i]);
-            }
-        }
 
         [TestMethod(), TestCategory("Statistics")]
         public void SortingStatisticsTest()
@@ -149,5 +56,102 @@ namespace UniversalSorter.SortsLibrary.Tests
             // assert
             Assert.IsTrue(true);
         }
+
+
+        [TestMethod(), TestCategory("BaseAlgorithm")]
+        public void AlgorithmBaseSortTest()
+        {
+            // arrange
+            var sortAlgorithm = new AlgorithmBase<int>(inputList);
+
+            // act
+            sortAlgorithm.StartSort();
+
+            // assert
+            for (int i = 0; i < inputList.Count; i++)
+            {
+                Assert.AreEqual(sortedList[i], sortAlgorithm.Items[i]);
+            }
+        }
+        [TestMethod(), TestCategory("BaseAlgorithm")]
+        public void AlgorithmBaseMultiThreadingSortTest()
+        {
+            // arrange
+            var sortAlgorithm = new AlgorithmBase<int>(inputList);
+
+            // act-assert
+            Assert.ThrowsException<NotSupportedException>(() => sortAlgorithm.StartMultiThreadingSort());
+        }
+
+
+        [TestMethod(), TestCategory("MergeSortAlgorithm")]
+        public void MergeSortTest()
+        {
+            // arrange
+            var sortAlgorithm = new MergeSort<int>(inputList);
+            //sortAlgorithm.CompareEvent += M1;
+
+            // act
+            sortAlgorithm.StartSort();
+
+            // assert
+            for (int i = 0; i < inputList.Count; i++)
+            {
+                Assert.AreEqual(sortedList[i], sortAlgorithm.Items[i]);
+            }
+        }
+        [TestMethod(), TestCategory("MergeSortAlgorithm")]
+        public void Merge2ThreadingSortTest()
+        {
+            // arrange
+            var sortAlgorithm = new MergeSort<int>(inputList);
+            sortAlgorithm.Threads = 2;
+            //sortAlgorithm.CompareEvent += M1;
+
+            // act
+            sortAlgorithm.StartMultiThreadingSort();
+
+            // assert
+            for (int i = 0; i < inputList.Count; i++)
+            {
+                Assert.AreEqual(sortedList[i], sortAlgorithm.Items[i]);
+            }
+        }
+
+
+        [TestMethod(), TestCategory("BubbleSortAlgorithm")]
+        public void BubbleSortTest()
+        {
+            // arrange
+            var sortAlgorithm = new BubbleSort<int>(inputList);
+            //sortAlgorithm.CompareEvent += M1;
+
+            // act
+            sortAlgorithm.StartSort();
+
+            // assert
+            for (int i = 0; i < inputList.Count; i++)
+            {
+                Assert.AreEqual(sortedList[i], sortAlgorithm.Items[i]);
+            }
+        }
+        [TestMethod(), TestCategory("BubbleSortAlgorithm")]
+        public void Bubble2ThreadingSortTest()
+        {
+            // arrange
+            var sortAlgorithm = new BubbleSort<int>(inputList);
+            sortAlgorithm.Threads = 2;
+            //sortAlgorithm.CompareEvent += M1;
+
+            // act
+            sortAlgorithm.StartMultiThreadingSort();
+
+            // assert
+            for (int i = 0; i < inputList.Count; i++)
+            {
+                Assert.AreEqual(sortedList[i], sortAlgorithm.Items[i]);
+            }
+        }
+
     }
 }

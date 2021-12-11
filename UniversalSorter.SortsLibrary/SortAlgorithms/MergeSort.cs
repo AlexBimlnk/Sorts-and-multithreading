@@ -23,7 +23,7 @@ namespace UniversalSorter.SortsLibrary.SortAlgorithms
 
         public override void StartSort()
         {
-            collection = Sort(collection);
+            Sort(collection);
         }
 
         public override void StartMultiThreadingSort()
@@ -60,92 +60,59 @@ namespace UniversalSorter.SortsLibrary.SortAlgorithms
                 SortWithThreads(L);
                 SortWithThreads(R);
             }
-            else if (rightSortThread == null) 
-            {
-                SortWithThreads(R);
-                Task.WaitAll(leftSortThread);
-            }
             else
             {
                 Task.WaitAll(leftSortThread, rightSortThread);
             }
 
-            int i = 0; int j = 0; int k = 0;
-
-            while (i < L.Count && j < R.Count)
-            {
-                if (Compare(L[i], R[j]) == -1)
-                {
-                    items[k] = L[i];
-                    i++;
-                }
-                else
-                {
-                    items[k] = R[j];
-                    j++;
-                }
-                k++;
-            }
-
-            while (i < L.Count)
-            {
-                items[k] = L[i];
-                i++; k++;
-            }
-            while (j < R.Count)
-            {
-                items[k] = R[j];
-                j++; k++;
-            }
+            Merge(L, R, items);
         }
 
-        private List<T> Sort(List<T> items)
+        private void Sort(List<T> items)
         {
             if (items.Count() == 1)
-                return items;
+                return;
 
             int mid = items.Count() / 2;
 
             var L = items.Take(mid).ToList();
             var R = items.Skip(mid).ToList();
 
-            return Merge(Sort(L), Sort(R));
+            Sort(L);
+            Sort(R);
+
+            Merge(L, R, items);
         }
 
-        private List<T> Merge(List<T> leftCollection, List<T> rightCollection)
+        private void Merge(List<T> left, List<T> right, List<T> outputItems)
         {
-            int i = 0; int j = 0;
-            var result = new List<T>();
+            int leftCounter = 0; int rightCounter = 0; int outputCounter = 0;
 
-            var mergeTest = new List<T>();
-
-            while (i < leftCollection.Count && j < rightCollection.Count)
+            while (leftCounter < left.Count && rightCounter < right.Count)
             {
-                if (Compare(leftCollection[i], rightCollection[j]) == -1)
+                if (Compare(left[leftCounter], right[rightCounter]) == -1)
                 {
-                    result.Add(leftCollection[i]);
-                    i++;
+                    Set(left[leftCounter], outputCounter, outputItems);
+                    leftCounter++;
                 }
                 else
                 {
-                    result.Add(rightCollection[j]);
-                    j++;
+                    Set(right[rightCounter], outputCounter, outputItems);
+                    rightCounter++;
                 }
+                outputCounter++;
             }
 
-            while (i < leftCollection.Count)
+            while (leftCounter < left.Count)
             {
-                result.Add(leftCollection[i]);
-                i++;
+                Set(left[leftCounter], outputCounter, outputItems);
+                leftCounter++; outputCounter++;
             }
-            while (j < rightCollection.Count)
+            while (rightCounter < right.Count)
             {
-                result.Add(rightCollection[j]);
-                j++;
+                Set(right[rightCounter], outputCounter, outputItems);
+                rightCounter++; outputCounter++;
             }
-
-            
-            return result;
         }
     }
 }
