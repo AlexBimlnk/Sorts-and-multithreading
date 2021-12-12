@@ -80,9 +80,15 @@ namespace UniversalSorter.SortsLibrary
 
 
         public AlgorithmBase() { }
+        public AlgorithmBase(int countThreads) { Threads = countThreads; }
         public AlgorithmBase(IEnumerable<T> items)
         {
             collection.AddRange(items);
+        }
+        public AlgorithmBase(IEnumerable<T> items, int countThreads)
+        {
+            collection.AddRange(items);
+            Threads = countThreads;
         }
 
 

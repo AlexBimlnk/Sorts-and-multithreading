@@ -3,22 +3,21 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Threading;
 
 namespace UniversalSorter.SortsLibrary.SortAlgorithms
 {
     /// <summary>
-    /// Сортировка пузырьком.
+    /// Сортировка выбором.
     /// </summary>
-    public class BubbleSort<T> : AlgorithmBase<T> where T : IComparable
+    public class SelectionSort<T> : AlgorithmBase<T> where T : IComparable
     {
         public override ThreadSupport ThreadSupport => ThreadSupport.Infinity;
 
 
-        public BubbleSort() { }
-        public BubbleSort(int countThreads) { Threads = countThreads; }
-        public BubbleSort(IEnumerable<T> items) : base(items) { }
-        public BubbleSort(IEnumerable<T> items, int countThreads) : base(items, countThreads) { }
+        public SelectionSort() { }
+        public SelectionSort(int countThreads) : base(countThreads) { }
+        public SelectionSort(IEnumerable<T> items) : base(items) { }
+        public SelectionSort(IEnumerable<T> items, int countThreads) : base(items, countThreads) { }
 
 
         public override void StartSort()
@@ -30,7 +29,7 @@ namespace UniversalSorter.SortsLibrary.SortAlgorithms
             int chunk = collection.Count / Threads;
             List<Task> tasks = new List<Task>();
             int i = 0;
-            for(; i < Threads; i++)
+            for (; i < Threads; i++)
             {
                 int start = i * chunk;
                 int end = start + chunk;
@@ -48,21 +47,27 @@ namespace UniversalSorter.SortsLibrary.SortAlgorithms
 
         private void Sort(int start, int end)
         {
-            for (int i = 0; i < end - start; i++)
+            for (int i = start; i < end - 1; i++)
             {
-                for (int j = start; j < end - i - 1; j++)
+                T min = collection[i];
+                int minIndex = i;
+                for (int j = i + 1; j < end; j++)
                 {
-                    if (Compare(collection[j + 1], collection[j]) == -1)
+                    if (Compare(min, collection[j]) == 1)
                     {
-                        Swap(j + 1, j);
+                        min = collection[j];
+                        minIndex = j;
                     }
                 }
+                Set(collection[i], minIndex, collection);
+                Set(min, i, collection);
             }
         }
+
         private void MergeChunks(int sizeChunk)
         {
             int iteration = 1;
-            while(iteration < sizeChunk + 1)
+            while (iteration < sizeChunk + 1)
             {
                 var left = collection.Take(sizeChunk * iteration).ToList();
                 var right = collection.Skip(iteration * sizeChunk).Take(sizeChunk).ToList();
@@ -96,7 +101,7 @@ namespace UniversalSorter.SortsLibrary.SortAlgorithms
                     rightCounter++; outputCounter++;
                 }
             }
-            
+
         }
     }
 }

@@ -7,25 +7,24 @@ using System.Threading.Tasks;
 
 namespace UniversalSorter.SortsLibrary.SortAlgorithms
 {
+    /// <summary>
+    /// Сортировка слиянием.
+    /// </summary>
     public class MergeSort<T> : AlgorithmBase<T> where T : IComparable
     {
         public override ThreadSupport ThreadSupport => ThreadSupport.Infinity;
 
+
         public MergeSort() { }
-
         public MergeSort(int countThreads) { Threads = countThreads; }
-
         public MergeSort(IEnumerable<T> items) : base(items) { }
-
-        public MergeSort(IEnumerable<T> items, int countThreads) : base(items) { Threads = countThreads; }
-
+        public MergeSort(IEnumerable<T> items, int countThreads) : base(items, countThreads) { }
 
 
         public override void StartSort()
         {
             Sort(collection);
         }
-
         public override void StartMultiThreadingSort()
         {
             SortWithThreads(collection);
@@ -68,7 +67,6 @@ namespace UniversalSorter.SortsLibrary.SortAlgorithms
 
             Merge(L, R, items);
         }
-
         private void Sort(List<T> items)
         {
             if (items.Count() == 1)
@@ -84,6 +82,7 @@ namespace UniversalSorter.SortsLibrary.SortAlgorithms
 
             Merge(L, R, items);
         }
+
 
         private void Merge(List<T> left, List<T> right, List<T> outputItems)
         {
