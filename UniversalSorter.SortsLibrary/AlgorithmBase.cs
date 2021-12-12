@@ -12,27 +12,27 @@ namespace UniversalSorter.SortsLibrary
     /// Производный класс сортировочных алгоритмов.
     /// </summary>
     /// <typeparam name="T"> Тип данных, предоставленный для сортировки. </typeparam>
-    public class AlgorithmBase<T> where T : IComparable
+    public abstract class AlgorithmBase<T> where T : IComparable
     {
+        /// <summary>
+        /// Число потоков, которые нужно использовать при многопоточной сортировке.
+        /// </summary>
+        private int _threadsMax = 2;
+        /// <summary>
+        /// Текущее кол-во потоков.
+        /// </summary>
+        protected int currentThreads = 1;
         /// <summary>
         /// Коллекция элементов.
         /// </summary>
         protected List<T> collection = new List<T>();
 
-        /// <summary>
-        /// Число потоков, которые нужно использовать при многопоточной сортировке.
-        /// </summary>
-        private int _threads = 2;
-        /// <summary>
-        /// Текущее кол-во потоков.
-        /// </summary>
-        protected int currentThreads = 1;
 
         /// <summary>
         /// Событие, вызываемое во время перестановке элементов.
         /// Третий параметр - id потока, в котором выполнено действие.
         /// </summary>
-        public event EventHandler<Tuple<T, T, int?>> SwopEvent;
+        public event EventHandler<Tuple<T, T, int?>> SwapEvent;
         /// <summary>
         /// Событие, вызываемое во время сравнения элементов. 
         /// Третий параметр - id потока, в котором выполнено действие.
@@ -44,24 +44,28 @@ namespace UniversalSorter.SortsLibrary
         /// </summary>
         public event EventHandler<Tuple<T, int, int?>> SetEvent;
 
+
         /// <summary>
         /// Возвращает коллекцию.
         /// </summary>
         public List<T> Items => collection;
-
         /// <summary>
         /// Возвращает статус, отражающий кол-во потоков, которые возможно установить.
         /// </summary>
-        public virtual ThreadSupport ThreadSupport => ThreadSupport.None;
-
+        public abstract ThreadSupport ThreadSupport { get; }
+        /// <summary>
+        /// Возвращает или устанавливает кол-во потоков,
+        /// которые алгоритм может использовать для многопоточной сортировки.
+        /// Установка потоков регламентируется свойством <see cref="ThreadSupport"/>.
+        /// </summary>
         public int Threads
         {
             get
             {
                 if (ThreadSupport == ThreadSupport.None)
-                    return 0;
+                    return currentThreads;
                 else
-                    return _threads;
+                    return _threadsMax;
             }
             set
             {
@@ -69,13 +73,13 @@ namespace UniversalSorter.SortsLibrary
                 {
                     if ( (ThreadSupport == ThreadSupport.Double && value == 2) 
                        || ThreadSupport != ThreadSupport.Double)
-                        _threads = value;
+                        _threadsMax = value;
                 }
             }
         }
 
-        public AlgorithmBase() { }
 
+        public AlgorithmBase() { }
         public AlgorithmBase(IEnumerable<T> items)
         {
             collection.AddRange(items);
@@ -85,44 +89,11 @@ namespace UniversalSorter.SortsLibrary
         /// <summary>
         /// Вызывает стандартную реализацию сортировки.
         /// </summary>
-        public virtual void StartSort()
-        {
-            BaseSort();
-        }
+        public abstract void StartSort();
         /// <summary>
         /// Вызывает многопоточную реализацию сортировки.
         /// </summary>
-        public virtual void StartMultiThreadingSort()
-        {
-            // TODO: Clear this method.
-            //Task task1 = new Task(() =>
-            //{
-            //    Debug.WriteLine($"Start task1 id : {Task.CurrentId}");
-            //    Debug.WriteLine($"Task1 id: {Task.CurrentId}");
-            //    Debug.WriteLine($"End task1 id : {Task.CurrentId}");
-            //});
-            //Task task2 = new Task(() =>
-            //{
-            //    Debug.WriteLine($"Start task2 id : {Task.CurrentId}");
-            //    Debug.WriteLine(Thread.CurrentThread.Name);
-            //    Debug.WriteLine("Start await 2s");
-            //    Thread.Sleep(200);
-            //    Debug.WriteLine($"Task2 id: {Task.CurrentId}");
-            //    Debug.WriteLine($"End task2 id : {Task.CurrentId}");
-            //});
-            //Task task3 = new Task(() =>
-            //{
-            //    Debug.WriteLine($"Start task3 id : {Task.CurrentId}");
-            //    Debug.WriteLine($"Task3 id: {Task.CurrentId}");
-            //    Debug.WriteLine($"End task3 id : {Task.CurrentId}");
-            //});
-            //task1.Start();
-            //task2.Start();
-            //task3.Start();
-            //Task.WaitAll(task1, task2, task3);
-            //Debug.WriteLine(task2.IsCompleted);
-            throw new NotSupportedException();
-        }
+        public abstract void StartMultiThreadingSort();
 
         /// <summary>
         /// Ставит элемент на заданную позицию в указанной коллекции.
@@ -148,7 +119,7 @@ namespace UniversalSorter.SortsLibrary
             T item = collection[position1];
             collection[position1] = collection[position2];
             collection[position2] = item;
-            SwopEvent?.Invoke(this, new Tuple<T, T, int?>(collection[position1], collection[position2], Task.CurrentId));
+            SwapEvent?.Invoke(this, new Tuple<T, T, int?>(collection[position1], collection[position2], Task.CurrentId));
         }
         /// <summary>
         /// Сравнивает два элемента.
@@ -161,11 +132,6 @@ namespace UniversalSorter.SortsLibrary
         {
             CompareEvent?.Invoke(this, new Tuple<T, T, int?>(item1, item2, Task.CurrentId));
             return item1.CompareTo(item2);
-        }
-
-        private void BaseSort()
-        {
-            collection.Sort();
         }
     }
 }

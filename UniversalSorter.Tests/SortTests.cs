@@ -35,7 +35,7 @@ namespace UniversalSorter.SortsLibrary.Tests
         }
 
 
-        [TestMethod(), TestCategory("Statistics")]
+        [TestMethod, TestCategory("StatMerge"), Ignore]
         public void SortingStatisticsTest()
         {
             // arrange
@@ -58,30 +58,21 @@ namespace UniversalSorter.SortsLibrary.Tests
         }
 
 
-        [TestMethod(), TestCategory("BaseAlgorithm")]
-        public void AlgorithmBaseSortTest()
-        {
-            // arrange
-            var sortAlgorithm = new AlgorithmBase<int>(inputList);
+        //[TestMethod(), TestCategory("BaseAlgorithm")]
+        //public void AlgorithmBaseSortTest()
+        //{
+        //    // arrange
+        //    var sortAlgorithm = new AlgorithmBase<int>(inputList);
 
-            // act
-            sortAlgorithm.StartSort();
+        //    // act
+        //    sortAlgorithm.StartSort();
 
-            // assert
-            for (int i = 0; i < inputList.Count; i++)
-            {
-                Assert.AreEqual(sortedList[i], sortAlgorithm.Items[i]);
-            }
-        }
-        [TestMethod(), TestCategory("BaseAlgorithm")]
-        public void AlgorithmBaseMultiThreadingSortTest()
-        {
-            // arrange
-            var sortAlgorithm = new AlgorithmBase<int>(inputList);
-
-            // act-assert
-            Assert.ThrowsException<NotSupportedException>(() => sortAlgorithm.StartMultiThreadingSort());
-        }
+        //    // assert
+        //    for (int i = 0; i < inputList.Count; i++)
+        //    {
+        //        Assert.AreEqual(sortedList[i], sortAlgorithm.Items[i]);
+        //    }
+        //}
 
 
         [TestMethod(), TestCategory("MergeSortAlgorithm")]
@@ -140,8 +131,8 @@ namespace UniversalSorter.SortsLibrary.Tests
         {
             // arrange
             var sortAlgorithm = new BubbleSort<int>(inputList);
-            sortAlgorithm.Threads = 2;
             //sortAlgorithm.CompareEvent += M1;
+            sortAlgorithm.Threads = 2; //100 Потоков давали максимальный прирост производительности на 20к
 
             // act
             sortAlgorithm.StartMultiThreadingSort();

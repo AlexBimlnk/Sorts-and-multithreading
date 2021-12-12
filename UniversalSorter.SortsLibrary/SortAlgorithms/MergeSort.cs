@@ -29,6 +29,7 @@ namespace UniversalSorter.SortsLibrary.SortAlgorithms
         public override void StartMultiThreadingSort()
         {
             SortWithThreads(collection);
+            currentThreads = 1;
         }
 
 
