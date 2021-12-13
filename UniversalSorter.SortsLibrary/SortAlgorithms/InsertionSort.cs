@@ -7,17 +7,17 @@ using System.Threading.Tasks;
 namespace UniversalSorter.SortsLibrary.SortAlgorithms
 {
     /// <summary>
-    /// Сортировка выбором.
+    /// Сортировка вставками.
     /// </summary>
-    public class SelectionSort<T> : AlgorithmBase<T> where T : IComparable
+    public class InsertionSort<T> : AlgorithmBase<T> where T : IComparable
     {
         public override ThreadSupport ThreadSupport => ThreadSupport.Infinity;
 
 
-        public SelectionSort() { }
-        public SelectionSort(int countThreads) : base(countThreads) { }
-        public SelectionSort(IEnumerable<T> items) : base(items) { }
-        public SelectionSort(IEnumerable<T> items, int countThreads) : base(items, countThreads) { }
+        public InsertionSort() { }
+        public InsertionSort(int countThreads) : base(countThreads) { }
+        public InsertionSort(IEnumerable<T> items) : base(items) { }
+        public InsertionSort(IEnumerable<T> items, int countThreads) : base(items, countThreads) { }
 
 
         public override void StartSort()
@@ -41,27 +41,24 @@ namespace UniversalSorter.SortsLibrary.SortAlgorithms
 
             Task.WaitAll(tasks.ToArray());
 
+
             MergeChunks(chunk);
         }
 
 
         private void Sort(int start, int end)
         {
-            for (int i = start; i < end - 1; i++)
+            for (int i = start + 1; i < end; i++)
             {
-                T min = collection[i];
-                int minIndex = i;
-                for (int j = i + 1; j < end; j++)
+                var temp = collection[i];
+                int j = i;
+                while (j > start && Compare(temp, collection[j - 1]) == -1)
                 {
-                    if (Compare(min, collection[j]) == 1)
-                    {
-                        min = collection[j];
-                        minIndex = j;
-                    }
+                    Set(collection[j - 1], j, collection);
+                    j--;
                 }
-                Set(collection[i], minIndex, collection);
-                Set(min, i, collection);
-            }
+                Set(temp, j, collection);
+            }            
         }
     }
 }

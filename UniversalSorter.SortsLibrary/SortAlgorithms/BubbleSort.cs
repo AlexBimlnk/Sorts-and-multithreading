@@ -59,44 +59,5 @@ namespace UniversalSorter.SortsLibrary.SortAlgorithms
                 }
             }
         }
-        private void MergeChunks(int sizeChunk)
-        {
-            int iteration = 1;
-            while(iteration < sizeChunk + 1)
-            {
-                var left = collection.Take(sizeChunk * iteration).ToList();
-                var right = collection.Skip(iteration * sizeChunk).Take(sizeChunk).ToList();
-                iteration++;
-
-                int leftCounter = 0; int rightCounter = 0; int outputCounter = 0;
-
-                while (leftCounter < left.Count && rightCounter < right.Count)
-                {
-                    if (Compare(left[leftCounter], right[rightCounter]) == -1)
-                    {
-                        collection[outputCounter] = left[leftCounter];
-                        leftCounter++;
-                    }
-                    else
-                    {
-                        collection[outputCounter] = right[rightCounter];
-                        rightCounter++;
-                    }
-                    outputCounter++;
-                }
-
-                while (leftCounter < left.Count)
-                {
-                    collection[outputCounter] = left[leftCounter];
-                    leftCounter++; outputCounter++;
-                }
-                while (rightCounter < right.Count)
-                {
-                    collection[outputCounter] = right[rightCounter];
-                    rightCounter++; outputCounter++;
-                }
-            }
-            
-        }
     }
 }

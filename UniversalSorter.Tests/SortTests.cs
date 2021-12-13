@@ -26,7 +26,7 @@ namespace UniversalSorter.SortsLibrary.Tests
         [ClassInitialize()]
         public static void Init(TestContext context)
         {
-            for (int i = 0; i < 10000; i++)
+            for (int i = 0; i < 20000; i++)
             {
                 inputList.Add(rnd.Next(0, 1000));
             }
@@ -203,6 +203,41 @@ namespace UniversalSorter.SortsLibrary.Tests
         {
             // arrange
             var sortAlgorithm = new SelectionSort<int>(inputList);
+            //sortAlgorithm.CompareEvent += M1;
+            sortAlgorithm.Threads = 100;
+
+            // act
+            sortAlgorithm.StartMultiThreadingSort();
+
+            // assert
+            for (int i = 0; i < inputList.Count; i++)
+            {
+                Assert.AreEqual(sortedList[i], sortAlgorithm.Items[i]);
+            }
+        }
+
+
+        [TestMethod(), TestCategory("InsertionSortAlgorithm")]
+        public void InsertionSortTest()
+        {
+            // arrange
+            var sortAlgorithm = new InsertionSort<int>(inputList);
+            //sortAlgorithm.CompareEvent += M1;
+
+            // act
+            sortAlgorithm.StartSort();
+
+            // assert
+            for (int i = 0; i < inputList.Count; i++)
+            {
+                Assert.AreEqual(sortedList[i], sortAlgorithm.Items[i]);
+            }
+        }
+        [TestMethod(), TestCategory("InsertionSortAlgorithm")]
+        public void Insertion100ThreadingSortTest()
+        {
+            // arrange
+            var sortAlgorithm = new InsertionSort<int>(inputList);
             //sortAlgorithm.CompareEvent += M1;
             sortAlgorithm.Threads = 100;
 

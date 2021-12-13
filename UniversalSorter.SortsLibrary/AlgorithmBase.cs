@@ -71,9 +71,11 @@ namespace UniversalSorter.SortsLibrary
             {
                 if (ThreadSupport != ThreadSupport.None && value >= 2)
                 {
-                    if ( (ThreadSupport == ThreadSupport.Double && value == 2) 
-                       || ThreadSupport != ThreadSupport.Double)
+                    if (ThreadSupport == ThreadSupport.Double && value == 2 ||
+                         ThreadSupport != ThreadSupport.Double && collection.Count >= value)
                         _threadsMax = value;
+                    else
+                        _threadsMax = 2;
                 }
             }
         }
@@ -100,6 +102,7 @@ namespace UniversalSorter.SortsLibrary
         /// Вызывает многопоточную реализацию сортировки.
         /// </summary>
         public abstract void StartMultiThreadingSort();
+
 
         /// <summary>
         /// Ставит элемент на заданную позицию в указанной коллекции.
@@ -138,6 +141,53 @@ namespace UniversalSorter.SortsLibrary
         {
             CompareEvent?.Invoke(this, new Tuple<T, T, int?>(item1, item2, Task.CurrentId));
             return item1.CompareTo(item2);
+        }
+
+
+        /// <summary>
+        /// Этот метод производит слияние отсортированных кусков массива.
+        /// Используется для слияния кусков, полученных в результате многопоточной
+        /// итерационной сортировки.
+        /// </summary>
+        /// <param name="sizeChunk"> Размер чанка массива. </param>
+        protected void MergeChunks(int sizeChunk)
+        {
+            int iteration = 1;
+            while (iteration < collection.Count / sizeChunk + 1)
+            {
+                var left = collection.Take(sizeChunk * iteration).ToList();
+                var right = collection.Skip(iteration * sizeChunk).Take(sizeChunk).ToList();
+                iteration++;
+
+                int leftCounter = 0; int rightCounter = 0; int outputCounter = 0;
+
+                while (leftCounter < left.Count && rightCounter < right.Count)
+                {
+                    if (Compare(left[leftCounter], right[rightCounter]) == -1)
+                    {
+                        collection[outputCounter] = left[leftCounter];
+                        leftCounter++;
+                    }
+                    else
+                    {
+                        collection[outputCounter] = right[rightCounter];
+                        rightCounter++;
+                    }
+                    outputCounter++;
+                }
+
+                while (leftCounter < left.Count)
+                {
+                    collection[outputCounter] = left[leftCounter];
+                    leftCounter++; outputCounter++;
+                }
+                while (rightCounter < right.Count)
+                {
+                    collection[outputCounter] = right[rightCounter];
+                    rightCounter++; outputCounter++;
+                }
+            }
+
         }
     }
 }
