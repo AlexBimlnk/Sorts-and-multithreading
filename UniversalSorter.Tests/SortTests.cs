@@ -274,7 +274,7 @@ namespace UniversalSorter.SortsLibrary.Tests
             // arrange
             var sortAlgorithm = new BinaryInsertionSort<int>(inputList);
             //sortAlgorithm.CompareEvent += M1;
-            sortAlgorithm.Threads = 65;
+            sortAlgorithm.Threads = 100;
 
             // act
             sortAlgorithm.StartMultiThreadingSort();
@@ -314,6 +314,41 @@ namespace UniversalSorter.SortsLibrary.Tests
             // act
             sortAlgorithm.StartMultiThreadingSort();
 
+
+            // assert
+            for (int i = 0; i < inputList.Count; i++)
+            {
+                Assert.AreEqual(sortedList[i], sortAlgorithm.Items[i]);
+            }
+        }
+
+
+        [TestMethod(), TestCategory("CocktailSortAlgorithm")]
+        public void CocktailSortTest()
+        {
+            // arrange
+            var sortAlgorithm = new CocktailSort<int>(inputList);
+            //sortAlgorithm.CompareEvent += M1;
+
+            // act
+            sortAlgorithm.StartSort();
+
+            // assert
+            for (int i = 0; i < inputList.Count; i++)
+            {
+                Assert.AreEqual(sortedList[i], sortAlgorithm.Items[i]);
+            }
+        }
+        [TestMethod(), TestCategory("CocktailSortAlgorithm")]
+        public void Cocktail100ThreadingSortTest()
+        {
+            // arrange
+            var sortAlgorithm = new CocktailSort<int>(inputList);
+            //sortAlgorithm.CompareEvent += M1;
+            sortAlgorithm.Threads = 100;
+
+            // act
+            sortAlgorithm.StartMultiThreadingSort();
 
             // assert
             for (int i = 0; i < inputList.Count; i++)

@@ -60,18 +60,6 @@ namespace UniversalSorter.SortsLibrary.SortAlgorithms
                 }
                 step /= 2;
             }
-
-            //lock (collection)
-            //{
-
-            //    Console.WriteLine();
-            //    Console.WriteLine($"Collection after thread {Task.CurrentId}");
-            //    foreach (var i in collection)
-            //    {
-            //        Console.Write($"{i}\t");
-            //    }
-            //    Console.WriteLine();
-            //}
         }
     }
 }
