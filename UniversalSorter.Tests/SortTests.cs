@@ -26,7 +26,7 @@ namespace UniversalSorter.SortsLibrary.Tests
         [ClassInitialize()]
         public static void Init(TestContext context)
         {
-            for (int i = 0; i < 20000; i++)
+            for (int i = 0; i < 10000; i++)
             {
                 inputList.Add(rnd.Next(0, 1000));
             }
@@ -112,7 +112,7 @@ namespace UniversalSorter.SortsLibrary.Tests
         }
 
 
-        [TestMethod(), TestCategory("BubbleSortAlgorithm"), Ignore]
+        [TestMethod(), TestCategory("BubbleSortAlgorithm")]
         public void BubbleSortTest()
         {
             // arrange
@@ -243,6 +243,77 @@ namespace UniversalSorter.SortsLibrary.Tests
 
             // act
             sortAlgorithm.StartMultiThreadingSort();
+
+            // assert
+            for (int i = 0; i < inputList.Count; i++)
+            {
+                Assert.AreEqual(sortedList[i], sortAlgorithm.Items[i]);
+            }
+        }
+
+
+        [TestMethod(), TestCategory("BinaryInsertionSortAlgorithm")]
+        public void BinaryInsertionSortTest()
+        {
+            // arrange
+            var sortAlgorithm = new BinaryInsertionSort<int>(inputList);
+            //sortAlgorithm.CompareEvent += M1;
+
+            // act
+            sortAlgorithm.StartSort();
+
+            // assert
+            for (int i = 0; i < inputList.Count; i++)
+            {
+                Assert.AreEqual(sortedList[i], sortAlgorithm.Items[i]);
+            }
+        }
+        [TestMethod(), TestCategory("BinaryInsertionSortAlgorithm")]
+        public void BinaryInsertion100ThreadingSortTest()
+        {
+            // arrange
+            var sortAlgorithm = new BinaryInsertionSort<int>(inputList);
+            //sortAlgorithm.CompareEvent += M1;
+            sortAlgorithm.Threads = 65;
+
+            // act
+            sortAlgorithm.StartMultiThreadingSort();
+
+            // assert
+            for (int i = 0; i < inputList.Count; i++)
+            {
+                Assert.AreEqual(sortedList[i], sortAlgorithm.Items[i]);
+            }
+        }
+
+
+        [TestMethod(), TestCategory("ShellSortAlgorithm")]
+        public void ShellSortTest()
+        {
+            // arrange
+            var sortAlgorithm = new ShellSort<int>(inputList);
+            //sortAlgorithm.CompareEvent += M1;
+
+            // act
+            sortAlgorithm.StartSort();
+
+            // assert
+            for (int i = 0; i < inputList.Count; i++)
+            {
+                Assert.AreEqual(sortedList[i], sortAlgorithm.Items[i]);
+            }
+        }
+        [TestMethod(), TestCategory("ShellSortAlgorithm")]
+        public void Shell10ThreadingSortTest()
+        {
+            // arrange
+            var sortAlgorithm = new ShellSort<int>(inputList);
+            //sortAlgorithm.CompareEvent += M1;
+            sortAlgorithm.Threads = 10;
+
+            // act
+            sortAlgorithm.StartMultiThreadingSort();
+
 
             // assert
             for (int i = 0; i < inputList.Count; i++)

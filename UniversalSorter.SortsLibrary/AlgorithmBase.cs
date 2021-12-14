@@ -157,7 +157,6 @@ namespace UniversalSorter.SortsLibrary
             {
                 var left = collection.Take(sizeChunk * iteration).ToList();
                 var right = collection.Skip(iteration * sizeChunk).Take(sizeChunk).ToList();
-                iteration++;
 
                 int leftCounter = 0; int rightCounter = 0; int outputCounter = 0;
 
@@ -186,6 +185,8 @@ namespace UniversalSorter.SortsLibrary
                     collection[outputCounter] = right[rightCounter];
                     rightCounter++; outputCounter++;
                 }
+
+                iteration++;
             }
 
         }
