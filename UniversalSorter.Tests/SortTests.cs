@@ -36,23 +36,18 @@ namespace UniversalSorter.SortsLibrary.Tests
         }
 
 
-        [TestMethod, TestCategory("StatMerge"), Ignore]
+        [TestMethod, TestCategory("StatInsertion")]
         public void SortingStatisticsTest()
         {
             // arrange
-            var sortAlgorithm1 = new MergeSort<int>(inputList);
-            sortAlgorithm1.Threads = 2;
-            var sortAlgorithm2 = new MergeSort<int>(inputList);
-            sortAlgorithm2.Threads = 4;
-            var sortAlgorithm3 = new MergeSort<int>(inputList);
-            sortAlgorithm3.Threads = 8;
-
-
+            var sortAlgorithm1 = new InsertionSort<int>(inputList);
 
             // act
-            SortingStatistics<int>.Statistics(sortAlgorithm1);
-            SortingStatistics<int>.Statistics(sortAlgorithm2);
-            SortingStatistics<int>.Statistics(sortAlgorithm3);
+            var stat1 = new SortingStatistics<int>(sortAlgorithm1, 100, 10);
+            stat1.StartCollectingStatistics();
+
+            Debug.WriteLine(stat1.GetStatistics().ToString());
+            Debug.WriteLine($"Better threads count: {stat1.BetterThreadsCountOfTime()}");
 
             // assert
             Assert.IsTrue(true);
