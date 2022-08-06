@@ -227,20 +227,6 @@ namespace UniversalSorter.SortsLibrary.Tests
             sortedList.Should().BeEquivalentTo(sortAlgorithm.Items);
         }
 
-
-        [Fact]
-        public void BinaryInsertionSortTest()
-        {
-            // arrange
-            var sortAlgorithm = new BinaryInsertionSort<int>(inputList);
-            //sortAlgorithm.CompareEvent += M1;
-
-            // act
-            sortAlgorithm.StartSort();
-
-            // assert
-            sortedList.Should().BeEquivalentTo(sortAlgorithm.Items);
-        }
         [TestMethod(), TestCategory("BinaryInsertionSortAlgorithm")]
         public void BinaryInsertion100ThreadingSortTest()
         {
@@ -250,7 +236,7 @@ namespace UniversalSorter.SortsLibrary.Tests
             sortAlgorithm.Threads = 100;
 
             // act
-            sortAlgorithm.StartMultiThreadingSort();
+            sortAlgorithm.StartMultiThreadingSort().Wait();
 
             // assert
             sortedList.Should().BeEquivalentTo(sortAlgorithm.Items);

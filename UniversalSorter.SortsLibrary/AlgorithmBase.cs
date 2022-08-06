@@ -69,8 +69,8 @@ public abstract class AlgorithmBase<TValue> where TValue : IComparable
                     _ => _currentThreads = value,
                 };
             }
-
-            throw new InvalidOperationException($"Thread support is: {ThreadSupport}");
+            else
+                throw new InvalidOperationException($"Thread support is: {ThreadSupport}");
         }
     }
 

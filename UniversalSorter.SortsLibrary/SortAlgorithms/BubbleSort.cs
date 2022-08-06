@@ -14,37 +14,8 @@ public class BubbleSort<T> : AlgorithmBase<T> where T : IComparable
 {
     public override ThreadSupport ThreadSupport => ThreadSupport.Infinity;
 
-
     public BubbleSort(IEnumerable<T> items) : base(items) { }
     public BubbleSort(IEnumerable<T> items, int countThreads) : base(items, countThreads) { }
-
-
-    public override void StartSort()
-    {
-        Sort(0, collection.Count);
-    }
-    public override Task StartMultiThreadingSort()
-    {
-        int chunk = collection.Count / Threads;
-        List<Task> tasks = new List<Task>();
-        int i = 0;
-        for(; i < Threads; i++)
-        {
-            int start = i * chunk;
-            int end = start + chunk;
-            tasks.Add(new Task(() => Sort(start, end)));
-            tasks[i].Start();
-        }
-        tasks.Add(new Task(() => Sort(i * chunk, collection.Count)));
-        tasks.Last().Start();
-
-        Task.WaitAll(tasks.ToArray());
-
-        MergeChunks(chunk);
-
-        return Task.CompletedTask;
-    }
-
 
     private void Sort(int start, int end)
     {
@@ -58,5 +29,29 @@ public class BubbleSort<T> : AlgorithmBase<T> where T : IComparable
                 }
             }
         }
+    }
+
+    public override void StartSort()
+    {
+        Sort(0, collection.Count);
+    }
+
+    public override async Task StartMultiThreadingSort()
+    {
+        int chunk = collection.Count / Threads;
+
+        await Task.WhenAll(
+                Enumerable.Range(0, Threads)
+                    .Select(x =>
+                    {
+                        var start = x * chunk;
+                        var end = start + chunk;
+
+                        return Task.Run(() => Sort(start, end));
+                    }));
+
+        await Task.Run(() => Sort(Threads * chunk, collection.Count));
+
+        MergeChunks(chunk);
     }
 }
