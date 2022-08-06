@@ -1,63 +1,33 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace UniversalSorter.SortsLibrary.SortAlgorithms
+namespace UniversalSorter.SortsLibrary.SortAlgorithms;
+
+/// <summary>
+/// Сортировка вставками.
+/// </summary>
+public sealed class InsertionSort<T> : AlgorithmWithChunksMergeBase<T> where T : IComparable
 {
-    /// <summary>
-    /// Сортировка вставками.
-    /// </summary>
-    public class InsertionSort<T> : AlgorithmBase<T> where T : IComparable
+    public InsertionSort(IEnumerable<T> items) : base(items) { }
+    public InsertionSort(IEnumerable<T> items, int countThreads) : base(items, countThreads) { }
+
+    protected override void Sort(int start, int end)
     {
-        public override ThreadSupport ThreadSupport => ThreadSupport.Infinity;
-
-        public InsertionSort(IEnumerable<T> items) : base(items) { }
-        public InsertionSort(IEnumerable<T> items, int countThreads) : base(items, countThreads) { }
-
-
-        public override void StartSort()
+        for (int i = start + 1; i < end; i++)
         {
-            Sort(0, collection.Count);
-        }
-        public override Task StartMultiThreadingSort()
-        {
-            int chunk = collection.Count / Threads;
-            List<Task> tasks = new List<Task>();
-            int i = 0;
-            for (; i < Threads; i++)
+            var temp = collection[i];
+            int j = i;
+            while (j > start && Compare(temp, collection[j - 1]) == -1)
             {
-                int start = i * chunk;
-                int end = start + chunk;
-                tasks.Add(new Task(() => Sort(start, end)));
-                tasks[i].Start();
+                Set(collection[j - 1], j, collection);
+                j--;
             }
-            tasks.Add(new Task(() => Sort(i * chunk, collection.Count)));
-            tasks.Last().Start();
-
-            Task.WaitAll(tasks.ToArray());
-
-
-            MergeChunks(chunk);
-
-            return Task.CompletedTask;
+            Set(temp, j, collection);
         }
+    }
 
-
-        private void Sort(int start, int end)
-        {
-            for (int i = start + 1; i < end; i++)
-            {
-                var temp = collection[i];
-                int j = i;
-                while (j > start && Compare(temp, collection[j - 1]) == -1)
-                {
-                    Set(collection[j - 1], j, collection);
-                    j--;
-                }
-                Set(temp, j, collection);
-            }            
-        }
+    public override void StartSort()
+    {
+        Sort(0, collection.Count);
     }
 }
