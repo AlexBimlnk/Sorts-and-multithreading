@@ -1,15 +1,25 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using FluentAssertions;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Threading;
 using UniversalSorter.SortsLibrary.SortAlgorithms;
+using Xunit;
+//using Xunit;
 
 namespace UniversalSorter.SortsLibrary.Tests
 {
+    /*public class C
+    {
+        [Fact]
+        public void M()
+        {
+            1.Should();
+        }
+    }*/
+
+
     [TestClass()]
     public class SortTests
     {
@@ -32,7 +42,7 @@ namespace UniversalSorter.SortsLibrary.Tests
             }
 
             sortedList.AddRange(inputList.OrderBy(x => x).ToArray());
-            Debug.WriteLine($"Elemets: {inputList.Count/1000}k");
+            Debug.WriteLine($"Elemets: {inputList.Count / 1000}k");
         }
 
 
@@ -50,7 +60,7 @@ namespace UniversalSorter.SortsLibrary.Tests
             Debug.WriteLine($"Better threads count: {stat1.BetterThreadsCountOfTime()}");
 
             // assert
-            Assert.IsTrue(true);
+            Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(true);
         }
 
 
@@ -67,7 +77,7 @@ namespace UniversalSorter.SortsLibrary.Tests
             // assert
             for (int i = 0; i < inputList.Count; i++)
             {
-                Assert.AreEqual(sortedList[i], myCollection[i]);
+                Microsoft.VisualStudio.TestTools.UnitTesting.Assert.AreEqual(sortedList[i], myCollection[i]);
             }
         }
 
@@ -83,10 +93,7 @@ namespace UniversalSorter.SortsLibrary.Tests
             sortAlgorithm.StartSort();
 
             // assert
-            for (int i = 0; i < inputList.Count; i++)
-            {
-                Assert.AreEqual(sortedList[i], sortAlgorithm.Items[i]);
-            }
+            sortedList.Should().BeEquivalentTo(sortAlgorithm.Items);
         }
         [TestMethod(), TestCategory("MergeSortAlgorithm")]
         public void Merge2ThreadingSortTest()
@@ -100,10 +107,7 @@ namespace UniversalSorter.SortsLibrary.Tests
             sortAlgorithm.StartMultiThreadingSort();
 
             // assert
-            for (int i = 0; i < inputList.Count; i++)
-            {
-                Assert.AreEqual(sortedList[i], sortAlgorithm.Items[i]);
-            }
+            sortedList.Should().BeEquivalentTo(sortAlgorithm.Items);
         }
 
 
@@ -118,11 +122,9 @@ namespace UniversalSorter.SortsLibrary.Tests
             sortAlgorithm.StartSort();
 
             // assert
-            for (int i = 0; i < inputList.Count; i++)
-            {
-                Assert.AreEqual(sortedList[i], sortAlgorithm.Items[i]);
-            }
+            sortedList.Should().BeEquivalentTo(sortAlgorithm.Items);
         }
+
         [TestMethod(), TestCategory("BubbleSortAlgorithm")]
         public void Bubble100ThreadingSortTest()
         {
@@ -135,10 +137,7 @@ namespace UniversalSorter.SortsLibrary.Tests
             sortAlgorithm.StartMultiThreadingSort();
 
             // assert
-            for (int i = 0; i < inputList.Count; i++)
-            {
-                Assert.AreEqual(sortedList[i], sortAlgorithm.Items[i]);
-            }
+            sortedList.Should().BeEquivalentTo(sortAlgorithm.Items);
         }
 
 
@@ -153,10 +152,7 @@ namespace UniversalSorter.SortsLibrary.Tests
             sortAlgorithm.StartSort();
 
             // assert
-            for (int i = 0; i < inputList.Count; i++)
-            {
-                Assert.AreEqual(sortedList[i], sortAlgorithm.Items[i]);
-            }
+            sortedList.Should().BeEquivalentTo(sortAlgorithm.Items);
         }
         [TestMethod(), TestCategory("QuickSortAlgorithm")]
         public void Quick2ThreadingSortTest()
@@ -170,10 +166,7 @@ namespace UniversalSorter.SortsLibrary.Tests
             sortAlgorithm.StartMultiThreadingSort();
 
             // assert
-            for (int i = 0; i < inputList.Count; i++)
-            {
-                Assert.AreEqual(sortedList[i], sortAlgorithm.Items[i]);
-            }
+            sortedList.Should().BeEquivalentTo(sortAlgorithm.Items);
         }
 
 
@@ -188,10 +181,7 @@ namespace UniversalSorter.SortsLibrary.Tests
             sortAlgorithm.StartSort();
 
             // assert
-            for (int i = 0; i < inputList.Count; i++)
-            {
-                Assert.AreEqual(sortedList[i], sortAlgorithm.Items[i]);
-            }
+            sortedList.Should().BeEquivalentTo(sortAlgorithm.Items);
         }
         [TestMethod(), TestCategory("SelectionSortAlgorithm")]
         public void Selection100ThreadingSortTest()
@@ -205,10 +195,7 @@ namespace UniversalSorter.SortsLibrary.Tests
             sortAlgorithm.StartMultiThreadingSort();
 
             // assert
-            for (int i = 0; i < inputList.Count; i++)
-            {
-                Assert.AreEqual(sortedList[i], sortAlgorithm.Items[i]);
-            }
+            sortedList.Should().BeEquivalentTo(sortAlgorithm.Items);
         }
 
 
@@ -223,10 +210,7 @@ namespace UniversalSorter.SortsLibrary.Tests
             sortAlgorithm.StartSort();
 
             // assert
-            for (int i = 0; i < inputList.Count; i++)
-            {
-                Assert.AreEqual(sortedList[i], sortAlgorithm.Items[i]);
-            }
+            sortedList.Should().BeEquivalentTo(sortAlgorithm.Items);
         }
         [TestMethod(), TestCategory("InsertionSortAlgorithm")]
         public void Insertion100ThreadingSortTest()
@@ -240,14 +224,11 @@ namespace UniversalSorter.SortsLibrary.Tests
             sortAlgorithm.StartMultiThreadingSort();
 
             // assert
-            for (int i = 0; i < inputList.Count; i++)
-            {
-                Assert.AreEqual(sortedList[i], sortAlgorithm.Items[i]);
-            }
+            sortedList.Should().BeEquivalentTo(sortAlgorithm.Items);
         }
 
 
-        [TestMethod(), TestCategory("BinaryInsertionSortAlgorithm")]
+        [Fact]
         public void BinaryInsertionSortTest()
         {
             // arrange
@@ -258,10 +239,7 @@ namespace UniversalSorter.SortsLibrary.Tests
             sortAlgorithm.StartSort();
 
             // assert
-            for (int i = 0; i < inputList.Count; i++)
-            {
-                Assert.AreEqual(sortedList[i], sortAlgorithm.Items[i]);
-            }
+            sortedList.Should().BeEquivalentTo(sortAlgorithm.Items);
         }
         [TestMethod(), TestCategory("BinaryInsertionSortAlgorithm")]
         public void BinaryInsertion100ThreadingSortTest()
@@ -275,10 +253,7 @@ namespace UniversalSorter.SortsLibrary.Tests
             sortAlgorithm.StartMultiThreadingSort();
 
             // assert
-            for (int i = 0; i < inputList.Count; i++)
-            {
-                Assert.AreEqual(sortedList[i], sortAlgorithm.Items[i]);
-            }
+            sortedList.Should().BeEquivalentTo(sortAlgorithm.Items);
         }
 
 
@@ -293,10 +268,7 @@ namespace UniversalSorter.SortsLibrary.Tests
             sortAlgorithm.StartSort();
 
             // assert
-            for (int i = 0; i < inputList.Count; i++)
-            {
-                Assert.AreEqual(sortedList[i], sortAlgorithm.Items[i]);
-            }
+            sortedList.Should().BeEquivalentTo(sortAlgorithm.Items);
         }
         [TestMethod(), TestCategory("ShellSortAlgorithm")]
         public void Shell10ThreadingSortTest()
@@ -311,10 +283,7 @@ namespace UniversalSorter.SortsLibrary.Tests
 
 
             // assert
-            for (int i = 0; i < inputList.Count; i++)
-            {
-                Assert.AreEqual(sortedList[i], sortAlgorithm.Items[i]);
-            }
+            sortedList.Should().BeEquivalentTo(sortAlgorithm.Items);
         }
 
 
@@ -329,10 +298,7 @@ namespace UniversalSorter.SortsLibrary.Tests
             sortAlgorithm.StartSort();
 
             // assert
-            for (int i = 0; i < inputList.Count; i++)
-            {
-                Assert.AreEqual(sortedList[i], sortAlgorithm.Items[i]);
-            }
+            sortedList.Should().BeEquivalentTo(sortAlgorithm.Items);
         }
         [TestMethod(), TestCategory("CocktailSortAlgorithm")]
         public void Cocktail100ThreadingSortTest()
@@ -346,10 +312,7 @@ namespace UniversalSorter.SortsLibrary.Tests
             sortAlgorithm.StartMultiThreadingSort();
 
             // assert
-            for (int i = 0; i < inputList.Count; i++)
-            {
-                Assert.AreEqual(sortedList[i], sortAlgorithm.Items[i]);
-            }
+            sortedList.Should().BeEquivalentTo(sortAlgorithm.Items);
         }
     }
 }

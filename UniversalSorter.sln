@@ -1,11 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.31911.196
+# Visual Studio Version 17
+VisualStudioVersion = 17.2.32630.192
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UniversalSorter.SortsLibrary", "UniversalSorter.SortsLibrary\UniversalSorter.SortsLibrary.csproj", "{F4B90932-9B32-4BC7-92A0-7783A35FFF14}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UniversalSorter.SortsLibrary", "UniversalSorter.SortsLibrary\UniversalSorter.SortsLibrary.csproj", "{F4B90932-9B32-4BC7-92A0-7783A35FFF14}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UniversalSorter.Tests", "UniversalSorter.Tests\UniversalSorter.Tests.csproj", "{D6803AE2-59AD-4EF3-A310-A1E0BAF30444}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UniversalSorter.SortsLibrary.Tests", "UniversalSorter.Tests\UniversalSorter.SortsLibrary.Tests.csproj", "{D6803AE2-59AD-4EF3-A310-A1E0BAF30444}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

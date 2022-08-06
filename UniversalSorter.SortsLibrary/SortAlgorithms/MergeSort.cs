@@ -12,11 +12,10 @@ namespace UniversalSorter.SortsLibrary.SortAlgorithms
     /// </summary>
     public class MergeSort<T> : AlgorithmBase<T> where T : IComparable
     {
+        private int _currentThreads = 1;
         public override ThreadSupport ThreadSupport => ThreadSupport.Infinity;
 
 
-        public MergeSort() { }
-        public MergeSort(int countThreads) { Threads = countThreads; }
         public MergeSort(IEnumerable<T> items) : base(items) { }
         public MergeSort(IEnumerable<T> items, int countThreads) : base(items, countThreads) { }
 
@@ -25,10 +24,11 @@ namespace UniversalSorter.SortsLibrary.SortAlgorithms
         {
             Sort(collection);
         }
-        public override void StartMultiThreadingSort()
+        public override Task StartMultiThreadingSort()
         {
             SortWithThreads(collection);
-            currentThreads = 1;
+            _currentThreads = 1;
+            return Task.CompletedTask;
         }
 
 
@@ -45,11 +45,11 @@ namespace UniversalSorter.SortsLibrary.SortAlgorithms
             Task leftSortThread = null;
             Task rightSortThread = null;
 
-            if (currentThreads < Threads)
+            if (_currentThreads < Threads)
             {
                 leftSortThread = new Task(()=>SortWithThreads(L));
                 rightSortThread = new Task(() => SortWithThreads(R));
-                currentThreads++;
+                _currentThreads++;
             }
 
             leftSortThread?.Start();

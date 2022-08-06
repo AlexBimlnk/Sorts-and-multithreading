@@ -11,8 +11,6 @@ namespace UniversalSorter.SortsLibrary.SortAlgorithms
         public override ThreadSupport ThreadSupport => ThreadSupport.Infinity;
 
 
-        public ShellSort() { }
-        public ShellSort(int countThreads) : base(countThreads) { }
         public ShellSort(IEnumerable<T> items) : base(items) { }
         public ShellSort(IEnumerable<T> items, int countThreads) : base(items, countThreads) { }
 
@@ -21,7 +19,7 @@ namespace UniversalSorter.SortsLibrary.SortAlgorithms
         {
             Sort(0, collection.Count);
         }
-        public override void StartMultiThreadingSort()
+        public override Task StartMultiThreadingSort()
         {
             int chunk = collection.Count / Threads;
             List<Task> tasks = new List<Task>();
@@ -40,6 +38,8 @@ namespace UniversalSorter.SortsLibrary.SortAlgorithms
 
 
             MergeChunks(chunk);
+
+            return Task.CompletedTask;
         }
 
 

@@ -11,12 +11,11 @@ namespace UniversalSorter.SortsLibrary.SortAlgorithms
     /// </summary>
     public class QuickSort<T> : AlgorithmBase<T> where T : IComparable
     {
+        private int _currentThreads = 1;
+
         public override ThreadSupport ThreadSupport => ThreadSupport.Infinity;
 
-
-        public QuickSort() { }
         public QuickSort(IEnumerable<T> items) : base(items) { }
-        public QuickSort(int countThreads) : base(countThreads) { }
         public QuickSort(IEnumerable<T> items, int countThreads) : base(items, countThreads) { }
 
 
@@ -24,10 +23,11 @@ namespace UniversalSorter.SortsLibrary.SortAlgorithms
         {
             Sort(0, collection.Count - 1);
         }
-        public override void StartMultiThreadingSort()
+        public override Task StartMultiThreadingSort()
         {
+            _currentThreads = 1;
             SortWithThreads(0, collection.Count - 1);
-            currentThreads = 1;
+            return Task.CompletedTask;
         }
 
 
@@ -41,11 +41,11 @@ namespace UniversalSorter.SortsLibrary.SortAlgorithms
             Task leftSortThread = null;
             Task rightSortThread = null;
 
-            if (currentThreads < Threads)
+            if (_currentThreads < Threads)
             {
                 leftSortThread = new Task(() => SortWithThreads(start, right));
                 rightSortThread = new Task(() => SortWithThreads(left, end));
-                currentThreads++;
+                _currentThreads++;
             }
 
             leftSortThread?.Start();
@@ -72,7 +72,6 @@ namespace UniversalSorter.SortsLibrary.SortAlgorithms
             Sort(start, right);
             Sort(left, end);
         }
-
 
         private void SortIteration(int start, int end, out int left, out int right)
         {

@@ -4,7 +4,6 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace UniversalSorter.SortsLibrary
 {
@@ -94,10 +93,10 @@ namespace UniversalSorter.SortsLibrary
                                     $"\tMemory used: {_memoryUsed}MByte");
 
             ResetItems();
-            
+
             Thread.Sleep(500);
 
-            for(int i = _minThreadsCount; i<=MaxThreadsCount; i += _stepIterationThreads)
+            for (int i = _minThreadsCount; i <= MaxThreadsCount; i += _stepIterationThreads)
             {
                 _algorithm.Threads = i;
                 StatisticsFromMethod(() => _algorithm.StartMultiThreadingSort());
@@ -112,7 +111,7 @@ namespace UniversalSorter.SortsLibrary
 
                 Thread.Sleep(500);
             }
-            
+
         }
 
         public StringBuilder GetStatistics()
@@ -125,9 +124,9 @@ namespace UniversalSorter.SortsLibrary
             TimeSpan minTime = _threadsTimeMemory.Values.ToList()[0].Item1;
             int betterThreadsCount = _threadsTimeMemory.Keys.ToList()[0];
 
-            foreach(var i in _threadsTimeMemory.Keys)
+            foreach (var i in _threadsTimeMemory.Keys)
             {
-                if(_threadsTimeMemory[i].Item1 < minTime)
+                if (_threadsTimeMemory[i].Item1 < minTime)
                 {
                     minTime = _threadsTimeMemory[i].Item1;
                     betterThreadsCount = i;
@@ -155,8 +154,7 @@ namespace UniversalSorter.SortsLibrary
 
         private void ResetItems()
         {
-            _algorithm.Items.Clear();
-            _algorithm.Items.AddRange(_items);
+            _algorithm.ResetCollection(_items);
         }
     }
 }

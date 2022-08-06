@@ -13,9 +13,6 @@ namespace UniversalSorter.SortsLibrary.SortAlgorithms
     {
         public override ThreadSupport ThreadSupport => ThreadSupport.Infinity;
 
-
-        public InsertionSort() { }
-        public InsertionSort(int countThreads) : base(countThreads) { }
         public InsertionSort(IEnumerable<T> items) : base(items) { }
         public InsertionSort(IEnumerable<T> items, int countThreads) : base(items, countThreads) { }
 
@@ -24,7 +21,7 @@ namespace UniversalSorter.SortsLibrary.SortAlgorithms
         {
             Sort(0, collection.Count);
         }
-        public override void StartMultiThreadingSort()
+        public override Task StartMultiThreadingSort()
         {
             int chunk = collection.Count / Threads;
             List<Task> tasks = new List<Task>();
@@ -43,6 +40,8 @@ namespace UniversalSorter.SortsLibrary.SortAlgorithms
 
 
             MergeChunks(chunk);
+
+            return Task.CompletedTask;
         }
 
 
