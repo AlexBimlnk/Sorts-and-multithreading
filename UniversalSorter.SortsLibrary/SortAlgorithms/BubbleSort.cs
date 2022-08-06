@@ -12,10 +12,10 @@ namespace UniversalSorter.SortsLibrary.SortAlgorithms;
 /// </summary>
 public class BubbleSort<T> : AlgorithmBase<T> where T : IComparable
 {
-    public override ThreadSupport ThreadSupport => ThreadSupport.Infinity;
-
     public BubbleSort(IEnumerable<T> items) : base(items) { }
     public BubbleSort(IEnumerable<T> items, int countThreads) : base(items, countThreads) { }
+
+    public override ThreadSupport ThreadSupport => ThreadSupport.Infinity;
 
     private void Sort(int start, int end)
     {
