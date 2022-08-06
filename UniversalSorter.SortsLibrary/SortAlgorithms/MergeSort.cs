@@ -48,6 +48,7 @@ public class MergeSort<T> : AlgorithmBase<T> where T : IComparable
             rightCounter++; outputCounter++;
         }
     }
+
     private void Sort(List<T> items)
     {
         if (items.Count == 1)
@@ -105,6 +106,7 @@ public class MergeSort<T> : AlgorithmBase<T> where T : IComparable
     {
         Sort(collection);
     }
+
     public override Task StartMultiThreadingSort()
     {
         _currentThreads = 1;

@@ -5,21 +5,9 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using UniversalSorter.SortsLibrary.SortAlgorithms;
-using Xunit;
-//using Xunit;
 
 namespace UniversalSorter.SortsLibrary.Tests
 {
-    /*public class C
-    {
-        [Fact]
-        public void M()
-        {
-            1.Should();
-        }
-    }*/
-
-
     [TestClass()]
     public class SortTests
     {
@@ -60,7 +48,7 @@ namespace UniversalSorter.SortsLibrary.Tests
             Debug.WriteLine($"Better threads count: {stat1.BetterThreadsCountOfTime()}");
 
             // assert
-            Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(true);
+            Assert.IsTrue(true);
         }
 
 
@@ -104,7 +92,7 @@ namespace UniversalSorter.SortsLibrary.Tests
             //sortAlgorithm.CompareEvent += M1;
 
             // act
-            sortAlgorithm.StartMultiThreadingSort();
+            sortAlgorithm.StartMultiThreadingSort().Wait();
 
             // assert
             sortedList.Should().BeEquivalentTo(sortAlgorithm.Items);
@@ -134,7 +122,7 @@ namespace UniversalSorter.SortsLibrary.Tests
             sortAlgorithm.Threads = 100; //100 Потоков давали максимальный прирост производительности на 20к
 
             // act
-            sortAlgorithm.StartMultiThreadingSort();
+            sortAlgorithm.StartMultiThreadingSort().Wait();
 
             // assert
             sortedList.Should().BeEquivalentTo(sortAlgorithm.Items);
@@ -160,10 +148,10 @@ namespace UniversalSorter.SortsLibrary.Tests
             // arrange
             var sortAlgorithm = new QuickSort<int>(inputList);
             //sortAlgorithm.CompareEvent += M1;
-            sortAlgorithm.Threads = 8;
+            sortAlgorithm.Threads = 2;
 
             // act
-            sortAlgorithm.StartMultiThreadingSort();
+             sortAlgorithm.StartMultiThreadingSort().Wait();
 
             // assert
             sortedList.Should().BeEquivalentTo(sortAlgorithm.Items);
@@ -192,7 +180,7 @@ namespace UniversalSorter.SortsLibrary.Tests
             sortAlgorithm.Threads = 100;
 
             // act
-            sortAlgorithm.StartMultiThreadingSort();
+            sortAlgorithm.StartMultiThreadingSort().Wait();
 
             // assert
             sortedList.Should().BeEquivalentTo(sortAlgorithm.Items);
@@ -221,7 +209,7 @@ namespace UniversalSorter.SortsLibrary.Tests
             sortAlgorithm.Threads = 100;
 
             // act
-            sortAlgorithm.StartMultiThreadingSort();
+            sortAlgorithm.StartMultiThreadingSort().Wait();
 
             // assert
             sortedList.Should().BeEquivalentTo(sortAlgorithm.Items);
@@ -237,6 +225,20 @@ namespace UniversalSorter.SortsLibrary.Tests
 
             // act
             sortAlgorithm.StartMultiThreadingSort().Wait();
+
+            // assert
+            sortedList.Should().BeEquivalentTo(sortAlgorithm.Items);
+        }
+
+        [TestMethod(), TestCategory("BinaryInsertionSortAlgorithm")]
+        public void BinaryInsertionSortTest()
+        {
+            // arrange
+            var sortAlgorithm = new BinaryInsertionSort<int>(inputList);
+            //sortAlgorithm.CompareEvent += M1;
+
+            // act
+            sortAlgorithm.StartSort();
 
             // assert
             sortedList.Should().BeEquivalentTo(sortAlgorithm.Items);
@@ -265,7 +267,7 @@ namespace UniversalSorter.SortsLibrary.Tests
             sortAlgorithm.Threads = 10;
 
             // act
-            sortAlgorithm.StartMultiThreadingSort();
+            sortAlgorithm.StartMultiThreadingSort().Wait();
 
 
             // assert
@@ -295,7 +297,7 @@ namespace UniversalSorter.SortsLibrary.Tests
             sortAlgorithm.Threads = 100;
 
             // act
-            sortAlgorithm.StartMultiThreadingSort();
+            sortAlgorithm.StartMultiThreadingSort().Wait();
 
             // assert
             sortedList.Should().BeEquivalentTo(sortAlgorithm.Items);
