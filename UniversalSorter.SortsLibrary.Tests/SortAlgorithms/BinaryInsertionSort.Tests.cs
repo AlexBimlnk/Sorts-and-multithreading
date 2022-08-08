@@ -1,8 +1,4 @@
-﻿using System;
-
-using FluentAssertions;
-using UniversalSorter.SortsLibrary.SortAlgorithms;
-using Xunit;
+﻿using UniversalSorter.SortsLibrary.SortAlgorithms;
 
 namespace UniversalSorter.SortsLibrary.Tests.SortAlgorithms;
 
